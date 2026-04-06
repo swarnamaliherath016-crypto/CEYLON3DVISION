@@ -11,14 +11,30 @@
     <!-- Lucide Icons via CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Optional: Configure Tailwind for custom defaults if needed, but standard classes work perfectly -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    colors: {
+                        gold: {
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                        }
+                    },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
-                        serif: ['Georgia', 'serif'],
+                    },
+                    animation: {
+                        blob: "blob 10s infinite",
+                    },
+                    keyframes: {
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" }
+                        }
                     }
                 }
             }
@@ -28,92 +44,151 @@
     <style>
         /* Custom Selection Color */
         ::selection {
-            background-color: #dc2626; /* red-600 */
-            color: white;
+            background-color: #EAB308; /* Gold */
+            color: #000;
         }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(234, 179, 8, 0.3); /* Gold tint border on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px -10px rgba(234, 179, 8, 0.15);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #EAB308;
+        }
+
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="min-h-screen bg-stone-50 text-stone-900 font-sans">
+<body class="min-h-screen text-slate-200 font-sans bg-black relative selection:bg-gold-500 selection:text-black">
+
+    <!-- Ambient Glowing Background (Makes the glass effect pop) -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#0a0a0a]">
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-gold-600/20 rounded-full blur-[100px] mix-blend-screen animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-red-900/30 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] bg-orange-700/20 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-4000"></div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-stone-200">
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+            <div class="flex justify-between items-center h-24">
                 
-                <!-- Logo -->
-                <a href="#home" class="flex items-center shrink-0">
+                <!-- Logo using 123.jpg -->
+                <a href="#home" class="flex items-center gap-3 shrink-0 group">
                     <img 
-                        src="logo.png" 
+                        src="123.jpg" 
                         alt="Ceylon 3D Vision Logo" 
-                        class="h-10 md:h-12 w-auto object-contain"
-                        onerror="handleLogoFallback(this)"
+                        class="h-14 w-14 rounded-full object-cover border-2 border-gold-500/50 shadow-[0_0_15px_rgba(234,179,8,0.3)] group-hover:border-gold-400 transition-colors"
+                        onerror="this.src='https://via.placeholder.com/150/000000/EAB308?text=C3D'"
                     />
+                    <div class="flex flex-col">
+                        <span class="font-black text-xl tracking-widest text-white leading-none">CEYLON<span class="text-gold-500">3D</span></span>
+                        <span class="text-[0.65rem] font-bold text-gold-500 tracking-[0.3em] uppercase mt-1">Vision</span>
+                    </div>
                 </a>
                 
                 <!-- Desktop Nav -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-sm font-bold text-stone-600 hover:text-red-600 transition-colors">Home</a>
-                    <a href="#services" class="text-sm font-bold text-stone-600 hover:text-red-600 transition-colors">Services</a>
-                    <a href="#portfolio" class="text-sm font-bold text-stone-600 hover:text-red-600 transition-colors">Portfolio</a>
-                    <a href="#contact" class="text-sm font-bold text-stone-600 hover:text-red-600 transition-colors">Contact</a>
+                    <a href="#home" class="text-sm font-semibold text-slate-300 hover:text-gold-400 transition-colors">Home</a>
+                    <a href="#services" class="text-sm font-semibold text-slate-300 hover:text-gold-400 transition-colors">Services</a>
+                    <a href="#portfolio" class="text-sm font-semibold text-slate-300 hover:text-gold-400 transition-colors">Portfolio</a>
+                    <a href="#contact" class="text-sm font-semibold text-slate-300 hover:text-gold-400 transition-colors">Contact</a>
                     <a 
                         href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        class="px-5 py-2.5 bg-red-600 rounded-full text-sm font-bold text-white hover:bg-red-700 hover:shadow-lg hover:shadow-red-600/25 transition-all"
+                        class="px-6 py-2.5 bg-gradient-to-r from-gold-600 to-gold-500 rounded-full text-sm font-bold text-black hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] hover:scale-105 transition-all duration-300"
                     >
                         View Drive
                     </a>
                 </div>
 
                 <!-- Mobile Nav Toggle -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 text-stone-600 hover:text-red-600" aria-label="Toggle Menu">
-                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-gold-500" aria-label="Toggle Menu">
+                    <i data-lucide="menu" id="menu-icon" class="w-7 h-7"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Nav Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-stone-200 shadow-xl">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="mobile-link block px-3 py-2 text-base font-bold text-stone-600 hover:bg-stone-50 hover:text-red-600 rounded-md">Home</a>
-                <a href="#services" class="mobile-link block px-3 py-2 text-base font-bold text-stone-600 hover:bg-stone-50 hover:text-red-600 rounded-md">Services</a>
-                <a href="#portfolio" class="mobile-link block px-3 py-2 text-base font-bold text-stone-600 hover:bg-stone-50 hover:text-red-600 rounded-md">Portfolio</a>
-                <a href="#contact" class="mobile-link block px-3 py-2 text-base font-bold text-stone-600 hover:bg-stone-50 hover:text-red-600 rounded-md">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10">
+            <div class="px-4 pt-4 pb-6 space-y-2">
+                <a href="#home" class="mobile-link block px-4 py-3 text-base font-bold text-slate-200 hover:bg-white/10 hover:text-gold-400 rounded-xl transition-colors">Home</a>
+                <a href="#services" class="mobile-link block px-4 py-3 text-base font-bold text-slate-200 hover:bg-white/10 hover:text-gold-400 rounded-xl transition-colors">Services</a>
+                <a href="#portfolio" class="mobile-link block px-4 py-3 text-base font-bold text-slate-200 hover:bg-white/10 hover:text-gold-400 rounded-xl transition-colors">Portfolio</a>
+                <a href="#contact" class="mobile-link block px-4 py-3 text-base font-bold text-slate-200 hover:bg-white/10 hover:text-gold-400 rounded-xl transition-colors">Contact</a>
+                <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="mobile-link block px-4 py-3 text-base font-bold text-black bg-gold-500 rounded-xl text-center mt-4">View Drive</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
-        <div class="absolute inset-0 z-0">
-            <!-- Custom tailwind gradient approximation for standard classes -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-red-50 via-white to-stone-50"></div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-red-50 text-red-600 border border-red-100 text-sm font-bold tracking-wide mb-6">
+    <section id="home" class="relative pt-40 pb-24 lg:pt-56 lg:pb-40 px-4">
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            
+            <div class="glass inline-flex items-center gap-2 py-2 px-5 rounded-full text-sm font-semibold tracking-wide text-gold-400 mb-8 border border-gold-500/30">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
                 CREATIVE AGENCY & VIDEO PRODUCTION
-            </span>
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-stone-900">
-                Visual Storytelling, <br/>
-                <span class="text-red-600">
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 text-white drop-shadow-xl">
+                Visual Storytelling,<br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-yellow-200 to-gold-600">
                     Elevated.
                 </span>
             </h1>
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-stone-600 mb-10 leading-relaxed">
+
+            <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 mb-12 leading-relaxed font-light">
                 Led by CEO D.K.T.H. Wijebandara, Ceylon3DVision is a premier creative agency specializing in high-end video editing, AI reels, and dynamic 3D visual concepts.
             </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
                 <a 
                     href="#portfolio" 
-                    class="w-full sm:w-auto px-8 py-4 bg-red-600 text-white rounded-full font-bold text-lg hover:bg-red-700 shadow-lg shadow-red-600/20 transition-all flex items-center justify-center gap-2"
+                    class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-gold-500 to-yellow-400 text-black rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(234,179,8,0.5)] hover:scale-105 transition-all flex items-center justify-center gap-3"
                 >
-                    <i data-lucide="play" class="w-5 h-5 fill-white"></i>
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
                     Explore Our Work
                 </a>
                 <a 
                     href="#contact" 
-                    class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-stone-200 text-stone-900 rounded-full font-bold text-lg hover:border-red-600 hover:text-red-600 transition-colors flex items-center justify-center"
+                    class="w-full sm:w-auto px-8 py-4 glass-button text-white rounded-full font-bold text-lg flex items-center justify-center"
                 >
                     Contact Us
                 </a>
@@ -121,17 +196,18 @@
         </div>
     </section>
 
-    <!-- Clients / Trusted By -->
-    <section class="py-10 border-y border-stone-200 bg-stone-50">
+    <!-- Clients / Trusted By (Glass Strip) -->
+    <section class="py-12 border-y border-white/5 relative z-10">
+        <div class="absolute inset-0 glass z-[-1]"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-sm font-bold text-stone-400 uppercase tracking-widest mb-6">Trusted by industry leaders</p>
-            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-                 <div class="text-xl font-extrabold font-serif flex items-center gap-2 text-stone-800">
-                     <span class="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center text-xs text-stone-600">IC</span>
+            <p class="text-sm font-semibold text-slate-500 uppercase tracking-[0.3em] mb-8">Trusted by industry leaders</p>
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-70 hover:opacity-100 transition-opacity duration-500">
+                 <div class="text-xl md:text-2xl font-black font-serif flex items-center gap-3 text-white">
+                     <div class="w-10 h-10 rounded-full glass flex items-center justify-center text-sm text-gold-400 border border-gold-500/20">IC</div>
                      Imperial College
                  </div>
-                 <div class="text-xl font-extrabold font-sans flex items-center gap-2 text-stone-800">
-                     <span class="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center text-xs text-stone-600">YSJ</span>
+                 <div class="text-xl md:text-2xl font-black font-sans flex items-center gap-3 text-white">
+                     <div class="w-10 h-10 rounded-full glass flex items-center justify-center text-sm text-gold-400 border border-gold-500/20">YSJ</div>
                      YSJ University
                  </div>
             </div>
@@ -139,109 +215,131 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-24 bg-white">
+    <section id="services" class="py-32 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-stone-900">Our Services</h2>
-                <p class="text-stone-600 text-lg">From concept to final cut, we deliver compelling visuals that capture attention and drive engagement.</p>
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-4xl md:text-5xl font-black mb-6 text-white tracking-tight">Our Expertise</h2>
+                <p class="text-slate-400 text-lg font-light">From concept to final cut, we deliver compelling visuals that capture attention and drive engagement wrapped in stunning quality.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Service 1 -->
-                <div class="bg-stone-50 border border-stone-200 p-8 rounded-2xl hover:border-red-600 hover:shadow-xl hover:shadow-red-600/5 transition-all group">
-                    <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-gold-400 mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-gold-500 group-hover:text-black group-hover:border-gold-400 transition-all duration-300">
                         <i data-lucide="video" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-stone-900">Creative Concepts</h3>
-                    <p class="text-stone-600 leading-relaxed">A/L & O/L concept videos, tailored precisely to your target demographic.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Creative Concepts</h3>
+                    <p class="text-slate-400 leading-relaxed font-light text-sm">A/L & O/L concept videos, tailored precisely to your target demographic for maximum impact.</p>
                 </div>
 
                 <!-- Service 2 -->
-                <div class="bg-stone-50 border border-stone-200 p-8 rounded-2xl hover:border-red-600 hover:shadow-xl hover:shadow-red-600/5 transition-all group">
-                    <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-gold-400 mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-gold-500 group-hover:text-black group-hover:border-gold-400 transition-all duration-300">
                         <i data-lucide="wand-2" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-stone-900">AI Reels</h3>
-                    <p class="text-stone-600 leading-relaxed">Cutting-edge AI-generated short-form content designed for maximum virality.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">AI Reels</h3>
+                    <p class="text-slate-400 leading-relaxed font-light text-sm">Cutting-edge AI-generated short-form content designed strategically for social media virality.</p>
                 </div>
 
                 <!-- Service 3 -->
-                <div class="bg-stone-50 border border-stone-200 p-8 rounded-2xl hover:border-red-600 hover:shadow-xl hover:shadow-red-600/5 transition-all group">
-                    <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-gold-400 mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-gold-500 group-hover:text-black group-hover:border-gold-400 transition-all duration-300">
                         <i data-lucide="film" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-stone-900">Promo Videos</h3>
-                    <p class="text-stone-600 leading-relaxed">High-quality promotional materials for educational institutions and businesses.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Promo Videos</h3>
+                    <p class="text-slate-400 leading-relaxed font-light text-sm">High-quality promotional materials crafted specifically for educational institutions and businesses.</p>
                 </div>
 
                 <!-- Service 4 -->
-                <div class="bg-stone-50 border border-stone-200 p-8 rounded-2xl hover:border-red-600 hover:shadow-xl hover:shadow-red-600/5 transition-all group">
-                    <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-gold-400 mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-gold-500 group-hover:text-black group-hover:border-gold-400 transition-all duration-300">
                         <i data-lucide="monitor-play" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-stone-900">Post-Production</h3>
-                    <p class="text-stone-600 leading-relaxed">Professional editing, color grading, and sound design for flawless execution.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Post-Production</h3>
+                    <p class="text-slate-400 leading-relaxed font-light text-sm">Professional editing, precise color grading, and immersive sound design for flawless execution.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="py-24 bg-stone-100 border-t border-stone-200">
+    <section id="portfolio" class="py-32 relative z-10">
+        <!-- Optional: Glass divider -->
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                 <div class="max-w-2xl">
-                    <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-stone-900">Recent Creations</h2>
-                    <p class="text-stone-600 text-lg">A glimpse into our recent deliverables. We create compelling narratives for our clients.</p>
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 text-white tracking-tight">Recent Creations</h2>
+                    <p class="text-slate-400 text-lg font-light">A glimpse into our recent deliverables. We build compelling, cinematic narratives.</p>
                 </div>
                 <a 
                     href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    class="group flex items-center gap-2 text-red-600 font-bold hover:text-red-700 transition-colors whitespace-nowrap bg-white px-6 py-3 rounded-full border border-stone-200 hover:border-red-600 shadow-sm"
+                    class="group flex items-center gap-3 text-gold-400 font-bold hover:text-black whitespace-nowrap glass hover:bg-gold-500 hover:border-gold-400 px-8 py-4 rounded-full transition-all duration-300"
                 >
-                    View Google Drive 
-                    <i data-lucide="external-link" class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    Access Google Drive 
+                    <i data-lucide="external-link" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
-                <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-2xl bg-stone-200 border border-stone-300 aspect-video flex flex-col justify-end p-6 cursor-pointer shadow-sm hover:shadow-xl transition-all block">
-                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/60 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-stone-300 group-hover:scale-105 transition-transform duration-500 opacity-50 flex items-center justify-center">
-                        <i data-lucide="film" class="w-16 h-16 text-stone-500"></i>
+                <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-3xl glass-card aspect-[4/3] flex flex-col justify-end p-8 block">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+                    
+                    <!-- Decorative background element for the card -->
+                    <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-gold-500 rounded-full blur-[50px]"></div>
                     </div>
-                    <div class="relative z-20">
-                        <span class="text-red-400 text-xs font-black tracking-wider uppercase mb-2 block drop-shadow-md">AI Short-Form</span>
-                        <h3 class="text-2xl font-bold text-white mb-1">Imperial College AI Reel</h3>
-                        <p class="text-stone-200 text-sm">Dynamic AI generated social media content.</p>
+
+                    <div class="absolute inset-0 group-hover:scale-110 transition-transform duration-700 opacity-30 flex items-center justify-center z-0">
+                        <i data-lucide="sparkles" class="w-24 h-24 text-gold-200"></i>
+                    </div>
+
+                    <div class="relative z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-gold-400 text-[0.65rem] font-bold tracking-widest uppercase mb-4">AI Short-Form</span>
+                        <h3 class="text-2xl font-black text-white mb-2">Imperial College AI Reel</h3>
+                        <p class="text-slate-300 text-sm font-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Dynamic AI generated social media content engineered for high engagement.</p>
                     </div>
                 </a>
 
                 <!-- Project 2 -->
-                <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-2xl bg-stone-200 border border-stone-300 aspect-video flex flex-col justify-end p-6 cursor-pointer shadow-sm hover:shadow-xl transition-all block">
-                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/60 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-stone-300 group-hover:scale-105 transition-transform duration-500 opacity-50 flex items-center justify-center">
-                        <i data-lucide="video" class="w-16 h-16 text-stone-500"></i>
+                <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-3xl glass-card aspect-[4/3] flex flex-col justify-end p-8 block">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+                    
+                    <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-red-500 rounded-full blur-[50px]"></div>
                     </div>
-                    <div class="relative z-20">
-                        <span class="text-red-400 text-xs font-black tracking-wider uppercase mb-2 block drop-shadow-md">Promo Concept</span>
-                        <h3 class="text-2xl font-bold text-white mb-1">After A/L Concept 01 & 02</h3>
-                        <p class="text-stone-200 text-sm">Targeted promotional campaign videos.</p>
+
+                    <div class="absolute inset-0 group-hover:scale-110 transition-transform duration-700 opacity-30 flex items-center justify-center z-0">
+                        <i data-lucide="video" class="w-24 h-24 text-red-200"></i>
+                    </div>
+
+                    <div class="relative z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-red-400 text-[0.65rem] font-bold tracking-widest uppercase mb-4">Promo Concept</span>
+                        <h3 class="text-2xl font-black text-white mb-2">After A/L Concept 01 & 02</h3>
+                        <p class="text-slate-300 text-sm font-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Targeted promotional campaign videos with high conversion metrics.</p>
                     </div>
                 </a>
 
                  <!-- Project 3 -->
-                 <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-2xl bg-stone-200 border border-stone-300 aspect-video flex flex-col justify-end p-6 cursor-pointer shadow-sm hover:shadow-xl transition-all block">
-                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/60 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-stone-300 group-hover:scale-105 transition-transform duration-500 opacity-50 flex items-center justify-center">
-                        <i data-lucide="monitor-play" class="w-16 h-16 text-stone-500"></i>
+                 <a href="https://drive.google.com/drive/folders/1vnOfK2GKBNm5L8qJx2YkkznBp4nI4O1N?usp=sharing" target="_blank" class="group relative overflow-hidden rounded-3xl glass-card aspect-[4/3] flex flex-col justify-end p-8 block">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+                    
+                    <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-blue-500 rounded-full blur-[50px]"></div>
                     </div>
-                    <div class="relative z-20">
-                        <span class="text-red-400 text-xs font-black tracking-wider uppercase mb-2 block drop-shadow-md">Commercial</span>
-                        <h3 class="text-2xl font-bold text-white mb-1">YSJ University Showcase</h3>
-                        <p class="text-stone-200 text-sm">High-end promotional material for higher education.</p>
+
+                    <div class="absolute inset-0 group-hover:scale-110 transition-transform duration-700 opacity-30 flex items-center justify-center z-0">
+                        <i data-lucide="monitor-play" class="w-24 h-24 text-blue-200"></i>
+                    </div>
+
+                    <div class="relative z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-blue-400 text-[0.65rem] font-bold tracking-widest uppercase mb-4">Commercial</span>
+                        <h3 class="text-2xl font-black text-white mb-2">YSJ University Showcase</h3>
+                        <p class="text-slate-300 text-sm font-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">High-end cinematic promotional material detailing higher education excellence.</p>
                     </div>
                 </a>
             </div>
@@ -249,96 +347,98 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-white border-t border-stone-200">
+    <section id="contact" class="py-32 relative z-10">
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
                 <div>
-                    <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-stone-900">Let's create something amazing.</h2>
-                    <p class="text-stone-600 text-lg mb-10">
-                        Ready to elevate your brand's visual identity? Get in touch with us to discuss your next project, request a quote, or just say hello.
+                    <h2 class="text-4xl md:text-6xl font-black mb-6 text-white tracking-tight">Let's craft <br/><span class="text-gold-400">something iconic.</span></h2>
+                    <p class="text-slate-400 text-lg font-light mb-12 max-w-lg">
+                        Ready to elevate your brand's visual identity? Get in touch with us to discuss your next project, request a quote, or simply say hello.
                     </p>
                     
                     <div class="space-y-8">
-                        <div class="flex items-start gap-4">
-                            <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-full flex items-center justify-center shrink-0 text-red-600">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center shrink-0 text-gold-400 group-hover:bg-gold-500 group-hover:text-black transition-all">
                                 <i data-lucide="phone" class="w-6 h-6"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-1">Call Us</h4>
-                                <p class="text-lg font-bold text-stone-900">+94 70 115 4531</p>
-                                <p class="text-lg font-bold text-stone-900">+94 76 420 6801</p>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Direct Line</h4>
+                                <p class="text-xl font-medium text-white">+94 70 115 4531</p>
+                                <p class="text-xl font-medium text-white">+94 76 420 6801</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
-                            <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-full flex items-center justify-center shrink-0 text-red-600">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center shrink-0 text-gold-400 group-hover:bg-gold-500 group-hover:text-black transition-all">
                                 <i data-lucide="mail" class="w-6 h-6"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-1">Email Us</h4>
-                                <a href="mailto:ceylon3dvision@outlook.com" class="text-lg font-bold text-stone-900 hover:text-red-600 transition-colors">ceylon3dvision@outlook.com</a>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Electronic Mail</h4>
+                                <a href="mailto:ceylon3dvision@outlook.com" class="text-xl font-medium text-white hover:text-gold-400 transition-colors">ceylon3dvision@outlook.com</a>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
-                            <div class="w-14 h-14 bg-red-50 border border-red-100 rounded-full flex items-center justify-center shrink-0 text-red-600">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center shrink-0 text-gold-400 group-hover:bg-gold-500 group-hover:text-black transition-all">
                                 <i data-lucide="map-pin" class="w-6 h-6"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-1">Visit Us</h4>
-                                <p class="text-lg font-bold text-stone-900 max-w-xs">e72, Lenagala, Weragala via Warakapola, Sri Lanka</p>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Headquarters</h4>
+                                <p class="text-lg font-light text-slate-300 max-w-[250px]">e72, Lenagala, Weragala via Warakapola, Sri Lanka</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Contact Form / Connect -->
-                <div class="bg-stone-50 border border-stone-200 p-8 md:p-10 rounded-3xl shadow-lg">
-                    <h3 class="text-2xl font-extrabold mb-4 text-stone-900">Connect on Socials</h3>
-                    <p class="text-stone-600 mb-8">Follow our journey and see our latest creative explorations across our social media platforms.</p>
+                <!-- Glass Social Connect Panel -->
+                <div class="glass p-10 md:p-12 rounded-[2.5rem] relative overflow-hidden">
+                    <!-- Glass glare effect -->
+                    <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
+
+                    <h3 class="text-3xl font-black mb-4 text-white">Join our Network</h3>
+                    <p class="text-slate-400 mb-10 font-light text-lg">Follow our journey and witness our latest visual explorations across platforms.</p>
                     
-                    <div class="grid grid-cols-1 gap-4">
+                    <div class="grid grid-cols-1 gap-5">
                         <a 
                             href="https://web.facebook.com/CEYLON3DVISION/" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="flex items-center justify-between p-5 rounded-xl border border-stone-200 bg-white hover:bg-[#1877F2] hover:border-[#1877F2] text-stone-900 hover:text-white transition-all group shadow-sm"
+                            class="flex items-center justify-between p-6 rounded-2xl glass-button text-white hover:bg-[#1877F2]/80 hover:border-[#1877F2] transition-all group"
                         >
-                            <div class="flex items-center gap-4">
-                                <!-- Facebook Icon SVG -->
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                <span class="font-bold text-lg">Facebook</span>
+                            <div class="flex items-center gap-5">
+                                <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                <span class="font-bold text-xl tracking-wide">Facebook</span>
                             </div>
-                            <i data-lucide="chevron-right" class="w-6 h-6 text-stone-400 group-hover:text-white"></i>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-500 group-hover:text-white transition-colors"></i>
                         </a>
 
                         <a 
                             href="https://www.instagram.com/ceylon3dvision/" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="flex items-center justify-between p-5 rounded-xl border border-stone-200 bg-white hover:bg-gradient-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:border-transparent text-stone-900 hover:text-white transition-all group shadow-sm"
+                            class="flex items-center justify-between p-6 rounded-2xl glass-button text-white hover:bg-gradient-to-r hover:from-[#833ab4]/80 hover:via-[#fd1d1d]/80 hover:to-[#fcb045]/80 hover:border-white/50 transition-all group"
                         >
-                            <div class="flex items-center gap-4">
-                                <!-- Instagram Icon SVG -->
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                                <span class="font-bold text-lg">Instagram</span>
+                            <div class="flex items-center gap-5">
+                                <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                <span class="font-bold text-xl tracking-wide">Instagram</span>
                             </div>
-                            <i data-lucide="chevron-right" class="w-6 h-6 text-stone-400 group-hover:text-white"></i>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-500 group-hover:text-white transition-colors"></i>
                         </a>
 
                         <a 
                             href="https://www.tiktok.com/@ceylon3dvision" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="flex items-center justify-between p-5 rounded-xl border border-stone-200 bg-white hover:bg-black hover:border-black text-stone-900 hover:text-white transition-all group relative overflow-hidden shadow-sm"
+                            class="flex items-center justify-between p-6 rounded-2xl glass-button text-white hover:bg-black hover:border-gold-400 transition-all group relative overflow-hidden shadow-sm"
                         >
-                            <div class="absolute inset-0 bg-gradient-to-r from-[#ff0050]/20 to-[#00f2fe]/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div class="flex items-center gap-4 relative z-10">
-                                <!-- TikTok Icon SVG -->
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-                                <span class="font-bold text-lg">TikTok</span>
+                            <div class="flex items-center gap-5 relative z-10">
+                                <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                                <span class="font-bold text-xl tracking-wide">TikTok</span>
                             </div>
-                            <i data-lucide="chevron-right" class="w-6 h-6 text-stone-400 group-hover:text-white relative z-10"></i>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-500 group-hover:text-white transition-colors relative z-10"></i>
                         </a>
                     </div>
                 </div>
@@ -347,20 +447,20 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-10 bg-stone-100 border-t border-stone-200 text-center">
+    <footer class="py-12 glass border-t border-white/10 text-center relative z-10 mt-10">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col items-center justify-center mb-6">
+            <div class="flex flex-col items-center justify-center mb-8">
                 <!-- Logo in footer -->
                 <img 
-                    src="logo.png" 
+                    src="123.jpg" 
                     alt="Ceylon 3D Vision Logo" 
-                    class="h-12 md:h-16 w-auto object-contain mb-3"
-                    onerror="handleLogoFallback(this)"
+                    class="h-20 w-20 rounded-full object-cover mb-4 border-2 border-gold-500/30"
+                    onerror="this.src='https://via.placeholder.com/150/000000/EAB308?text=C3D'"
                 />
                 
-                <p class="text-stone-500 font-medium mt-2">Creative Agency • Led by D.K.T.H. Wijebandara, CEO</p>
+                <p class="text-slate-400 font-light text-lg">Creative Agency • Led by D.K.T.H. Wijebandara, CEO</p>
             </div>
-            <p class="text-stone-400 text-sm font-medium">&copy; <span id="year"></span> Ceylon3DVision. All rights reserved.</p>
+            <p class="text-slate-600 text-sm font-medium">&copy; <span id="year"></span> Ceylon3DVision. All rights reserved.</p>
         </div>
     </footer>
 
@@ -383,14 +483,12 @@
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
                 mobileMenu.classList.remove('hidden');
-                // Change icon to 'X'
                 menuIcon.setAttribute('data-lucide', 'x');
             } else {
                 mobileMenu.classList.add('hidden');
-                // Change icon back to 'menu'
                 menuIcon.setAttribute('data-lucide', 'menu');
             }
-            lucide.createIcons(); // Re-render the icon
+            lucide.createIcons();
         }
 
         mobileMenuBtn.addEventListener('click', toggleMenu);
@@ -402,19 +500,15 @@
             });
         });
 
-        // Logo Fallback Logic
-        // This replaces the broken <img> with a styled text version if "logo.png" is missing
-        function handleLogoFallback(imgElement) {
-            const fallbackHTML = `
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center shrink-0 shadow-md shadow-red-600/20">
-                        <span class="font-bold text-xl text-white">3D</span>
-                    </div>
-                    <span class="font-bold text-xl tracking-tight text-stone-900">CEYLON<span class="text-red-600">3D</span>VISION</span>
-                </div>
-            `;
-            imgElement.outerHTML = fallbackHTML;
-        }
+        // Add blur effect to navbar on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'shadow-black/50');
+            } else {
+                nav.classList.remove('shadow-lg', 'shadow-black/50');
+            }
+        });
     </script>
 </body>
 </html>
